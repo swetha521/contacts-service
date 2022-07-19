@@ -39,7 +39,10 @@ public class Contact {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Contact contact = (Contact) o;
-        return id == contact.id;
+        return Objects.equals(firstName, contact.firstName) &&
+                Objects.equals(lastName, contact.lastName) &&
+                Objects.equals(phoneNumbers, contact.phoneNumbers) &&
+                Objects.equals(address, contact.address);
     }
 
     @Override

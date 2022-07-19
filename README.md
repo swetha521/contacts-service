@@ -10,7 +10,8 @@ This application can later be extended to store information in database/outside 
 
 ## Assumptions
 1. FirstName, LastName, address, phoneNumber fields are mandatory
-2. Any contact with same firstname //TODO
+2. Two contacts are same if FirstName, LastName, address, phoneNumber field values match and 
+will not be allowed to create
 
 
 

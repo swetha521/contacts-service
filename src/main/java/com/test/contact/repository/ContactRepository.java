@@ -44,6 +44,10 @@ public class ContactRepository implements IRepository {
         if (contactsData.containsKey(id)) {
             return Mono.error(new ResourceAlreadyExistException("Contact already exists with id '" + id + "'"));
         }
+
+        if(contactsData.containsValue(contact)) {
+            return Mono.error(new ResourceAlreadyExistException("Duplicate contact cannot be created [" + contact + "]"));
+        }
         contactsData.put(id, contact);
         return Mono.just(contact);
     }

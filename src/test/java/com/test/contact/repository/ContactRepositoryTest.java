@@ -42,9 +42,9 @@ public class ContactRepositoryTest {
     void createContact_ShouldReturnCreatedContact() {
         Contact contact = Contact.builder()
                 .id(3)
-                .firstName("A3")
-                .lastName("B3")
-                .address("ABC3")
+                .firstName("A5")
+                .lastName("B5")
+                .address("ABC5")
                 .phoneNumbers(Arrays.asList("3234567890"))
                 .build();
 
@@ -60,6 +60,24 @@ public class ContactRepositoryTest {
     void createContactWithExistingId_ShouldReturnException() {
         Contact contact = Contact.builder()
                 .id(1)
+                .firstName("A5")
+                .lastName("B5")
+                .address("ABC3")
+                .phoneNumbers(Arrays.asList("3234567890"))
+                .build();
+
+        Mono<Contact> savedContact = contactRepository.save(contact);
+
+        // then
+        StepVerifier.create(savedContact)
+                .expectErrorMatches(ex -> ex instanceof ResourceAlreadyExistException && ("400 BAD_REQUEST \"Contact already exists with id '1'\"").equalsIgnoreCase(ex.getMessage()))
+                .verify();
+    }
+
+    @Test
+    void createContactWithDuplicateInformation_ShouldReturnException() {
+        Contact contact = Contact.builder()
+                .id(5)
                 .firstName("A3")
                 .lastName("B3")
                 .address("ABC3")
@@ -70,7 +88,7 @@ public class ContactRepositoryTest {
 
         // then
         StepVerifier.create(savedContact)
-                .expectErrorMatches(ex -> ex instanceof ResourceAlreadyExistException && ("400 BAD_REQUEST \"Contact already exists with id '1'\"").equalsIgnoreCase(ex.getMessage()))
+                .expectErrorMatches(ex -> ex instanceof ResourceAlreadyExistException && ("400 BAD_REQUEST \"Duplicate contact cannot be created [Contact{id=5, firstName='A3', lastName='B3', phoneNumbers=[3234567890], address='ABC3'}]\"").equalsIgnoreCase(ex.getMessage()))
                 .verify();
     }
 
